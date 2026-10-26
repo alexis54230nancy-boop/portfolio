@@ -11,13 +11,19 @@
     <header>
         <nav>
             <a href="index.html" class="logo">Alexis Michaux</a>
-            <ul>
+            <ul id="menu">
                 <li><a href="index.html">Accueil</a></li>
                 <li><a href="projets.html" class="actif">Projets</a></li>
                 <li><a href="parcours.html">Parcours</a></li>
                 <li><a href="a-propos.html">À propos</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
+            <button type="button" class="bouton-audio" aria-pressed="false"><span aria-hidden="true">🔊</span> Écouter</button>
+            <button type="button" class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
@@ -58,5 +64,6 @@
     <footer>
         <p>© 2026 Alexis Michaux · Polices Bebas Neue et Inter (Google Fonts, licence libre)</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>

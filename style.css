@@ -61,6 +61,8 @@ nav {
     font-family: "Bebas Neue", sans-serif;
     font-size: 28px;
     text-decoration: none;
+    /* Pousse le reste du menu vers la droite */
+    margin-right: auto;
 }
 
 nav ul {
@@ -83,6 +85,69 @@ nav ul a:hover,
 nav ul a.actif {
     color: #111111;
     text-decoration: underline;
+}
+
+/* ===== Bouton audio ===== */
+.bouton-audio {
+    padding: 6px 16px;
+    border: 2px solid #111111;
+    border-radius: 30px;
+    background-color: #ffffff;
+    color: #111111;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.bouton-audio:hover,
+.bouton-audio[aria-pressed="true"] {
+    background-color: #111111;
+    color: #ffffff;
+}
+
+/* ===== Menu burger : caché sur ordinateur ===== */
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Les 3 barres du burger */
+.burger span {
+    display: block;
+    width: 26px;
+    height: 3px;
+    border-radius: 2px;
+    background-color: #111111;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+/* Quand le menu est ouvert, les 3 barres forment une croix */
+nav.ouvert .burger span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+nav.ouvert .burger span:nth-child(2) {
+    opacity: 0;
+}
+
+nav.ouvert .burger span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ===== Navigation au clavier ===== */
+/* Quand on se déplace avec la touche Tab, l'élément sélectionné est entouré */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #111111;
+    outline-offset: 3px;
 }
 
 /* ===== Contenu de la page ===== */
@@ -214,7 +279,28 @@ footer {
     h2 {
         font-size: 40px;
     }
+}
 
+/* ===== Tablette et téléphone : écrans de moins de 768px ===== */
+@media (max-width: 768px) {
+    /* Le burger apparaît, les liens sont cachés */
+    .burger {
+        display: flex;
+    }
+
+    nav ul {
+        display: none;
+        order: 1;
+        width: 100%;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 8px;
+    }
+
+    /* Clic sur le burger : les liens s'affichent en colonne */
+    nav.ouvert ul {
+        display: flex;
+    }
 }
 
 
