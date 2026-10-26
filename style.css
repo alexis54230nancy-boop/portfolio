@@ -1,0 +1,234 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap");
+:root {
+    --font-titre: "Bebas Neue", sans-serif;
+    --font-corps: "Inter", sans-serif;
+}
+/* ===== Toute la page ===== */
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    color: #111111;
+    background-color: #ffffff;
+    line-height: 1.6;
+}
+
+/* Les titres en Bebas Neue */
+h1,
+h2,
+h3 {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    line-height: 1;
+}
+
+h1 {
+    font-size: 80px;
+    margin: 0 0 16px;
+}
+
+h2 {
+    font-size: 48px;
+    margin: 64px 0 24px;
+}
+
+h3 {
+    font-size: 32px;
+    margin: 0 0 8px;
+}
+
+a {
+    color: #111111;
+}
+
+/* ===== Menu ===== */
+header {
+    border-bottom: 1px solid #dddddd;
+}
+
+nav {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.logo {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 28px;
+    text-decoration: none;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul a {
+    text-decoration: none;
+    color: #555555;
+    transition: color 0.3s;
+}
+
+/* Au survol, et sur la page où on est : le lien devient noir et souligné */
+nav ul a:hover,
+nav ul a.actif {
+    color: #111111;
+    text-decoration: underline;
+}
+
+/* ===== Contenu de la page ===== */
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 64px 20px;
+}
+
+.gris {
+    color: #555555;
+}
+
+/* ===== Accueil ===== */
+.accueil {
+    text-align: center;
+}
+
+.photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.5s;
+}
+
+/* Au survol, la photo passe en couleur */
+.photo:hover {
+    filter: grayscale(0%);
+}
+
+/* ===== Boutons ===== */
+.bouton {
+    display: inline-block;
+    margin: 8px;
+    padding: 12px 28px;
+    border: 2px solid #111111;
+    border-radius: 30px;
+    background-color: #111111;
+    color: #ffffff;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Au survol, le bouton s'inverse : fond blanc, texte noir */
+.bouton:hover {
+    background-color: #ffffff;
+    color: #111111;
+}
+
+/* ===== Cartes (projets, expériences) ===== */
+.cartes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.carte {
+    flex: 1 1 280px;
+    padding: 32px;
+    border: 1px solid #dddddd;
+    border-radius: 16px;
+    transition: transform 0.3s, background-color 0.3s, color 0.3s;
+}
+
+/* Au survol, la carte monte un peu et passe en noir */
+.carte:hover {
+    transform: translateY(-6px);
+    background-color: #111111;
+    color: #ffffff;
+}
+
+.carte:hover a,
+.carte:hover .gris {
+    color: #ffffff;
+}
+
+.carte:hover .progress-bar {
+    background-color: #555555;
+}
+
+.carte:hover .gris {
+    color: #dddddd;
+}
+
+.carte:hover .progress {
+    background-color: #ffffff;
+}
+
+/* ===== Formulaire de contact ===== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 500px;
+}
+
+input,
+textarea {
+    padding: 12px;
+    border: 1px solid #999999;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+form .bouton {
+    margin: 16px 0 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* ===== Pied de page ===== */
+footer {
+    padding: 32px 20px;
+    background-color: #111111;
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ===== Téléphone : écrans de moins de 600px ===== */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 56px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+}
+
+
+/* ===== Barre de niveau ===== */
+.progress-bar {
+    background-color: #dddddd;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    background-color: #111111;
+    height: 100%;
+    border-radius: 10px;
+
+}   
