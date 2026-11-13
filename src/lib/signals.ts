@@ -12,6 +12,8 @@ export const signals = {
   deep: 0,
   /** true : animations figées (prefers-reduced-motion). */
   frozen: false,
+  /** true : le rendu 3D est suspendu (seuil, boot, voile de transition). */
+  paused: false,
   /** Facteur de qualité (1 = normal, 0.5 = particules réduites). */
   quality: 1,
 

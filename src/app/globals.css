@@ -1238,6 +1238,16 @@ textarea.field__input {
   perspective: 1200px;
   cursor: pointer;
 }
+.strate__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.strate--locked .strate__hit {
+  cursor: not-allowed;
+}
 .strate__tilt {
   position: relative;
   height: 100%;
@@ -1275,7 +1285,7 @@ textarea.field__input {
   pointer-events: none;
 }
 .strate:hover .strate__mid,
-.strate:focus-visible .strate__mid {
+.strate:focus-within .strate__mid {
   border-color: rgba(var(--green-rgb), 0.8);
   box-shadow: var(--glow), inset 0 0 60px rgba(var(--green-rgb), 0.04);
 }
@@ -1292,12 +1302,12 @@ textarea.field__input {
   opacity: 0;
 }
 .strate:hover .strate__mid::after,
-.strate:focus-visible .strate__mid::after {
+.strate:focus-within .strate__mid::after {
   animation: card-scan 500ms linear 1;
 }
 @keyframes card-scan {
-  0% { transform: translateY(0); opacity: 0.9; }
-  100% { transform: translateY(var(--card-h, 420px)); opacity: 0.2; }
+  0% { top: 0; opacity: 0.9; }
+  100% { top: 100%; opacity: 0.2; }
 }
 .strate__num {
   font-family: var(--font-mono);
@@ -2019,5 +2029,67 @@ dialog.dossier[open] {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: #0a0a0a;
+  }
+}
+
+/* Repli CSS 3D du tore (mobile, ou WebGL indisponible) */
+.css-torus {
+  position: absolute;
+  top: 12%;
+  right: -30vw;
+  width: 90vw;
+  aspect-ratio: 1;
+  max-width: 620px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--green-rgb), 0.16);
+  box-shadow:
+    0 0 0 28px rgba(var(--green-rgb), 0.02),
+    inset 0 0 0 44px rgba(var(--green-rgb), 0.02),
+    inset 0 0 0 45px rgba(var(--green-rgb), 0.12),
+    inset 0 0 0 88px rgba(var(--green-rgb), 0.015),
+    inset 0 0 0 89px rgba(var(--green-rgb), 0.08);
+  transform: perspective(800px) rotateX(62deg) rotateZ(0deg);
+  animation: css-torus 40s linear infinite;
+}
+@keyframes css-torus {
+  to { transform: perspective(800px) rotateX(62deg) rotateZ(360deg); }
+}
+
+/* Fragment — silhouette SVG de repli */
+.frag-svg .frag-up,
+.frag-svg .frag-down {
+  transition: transform 1.2s var(--ease-out), opacity 1.2s;
+}
+.frag-svg .frag-eye {
+  opacity: 0;
+}
+.frag-svg[data-frame="1"] .frag-down {
+  opacity: 0.45;
+  transform: translateY(10px);
+}
+.frag-svg[data-frame="3"] .frag-up {
+  transform: translate(12px, -14px);
+}
+.frag-svg[data-frame="3"] .frag-down {
+  transform: translate(-12px, 14px);
+}
+.frag-svg[data-frame="4"] .frag-eye {
+  opacity: 1;
+  animation: blink 2.4s steps(1) infinite;
+}
+.frag-svg.is-named svg {
+  animation: frag-pulse 0.5s ease-in-out 3;
+}
+@keyframes frag-pulse {
+  50% { filter: drop-shadow(0 0 14px var(--green)); stroke-width: 1.6; }
+}
+.frag-svg.is-leaving {
+  transition: opacity 4s ease-in, transform 4s ease-in !important;
+  opacity: 0 !important;
+  transform: scale(0.6);
+}
+@media (max-width: 767px) {
+  .frag-frame {
+    min-height: 110vh;
   }
 }

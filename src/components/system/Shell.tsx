@@ -208,9 +208,10 @@ export default function Shell({ children }: { children: ReactNode }) {
   }, [chapter.id]);
 
   useEffect(() => {
+    signals.paused = booting || activate;
     if (booting) return;
     audio.setMood(MOODS[chapter.id]);
-  }, [chapter.id, booting]);
+  }, [chapter.id, booting, activate]);
 
   /* ---------------- Son : déverrouillage au premier geste + micro-sons ---------------- */
 

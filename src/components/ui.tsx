@@ -253,30 +253,41 @@ export function Typewriter({
       const t = window.setTimeout(() => cb.current?.(), 600);
       return () => clearTimeout(t);
     }
-    let li = 0;
-    let ci = 0;
-    let timer = 0;
-    const acc: string[] = [];
-    const tick = () => {
-      if (li >= lines.length) {
+    // Piloté par le temps écoulé : la frappe garde son rythme même si une image saute.
+    const ends: number[] = [];
+    let acc = 0;
+    for (const l of lines) {
+      acc += l.length * speed;
+      ends.push(acc);
+      acc += linePause;
+    }
+    const total = ends[ends.length - 1] ?? 0;
+    const t0 = performance.now();
+    let raf = 0;
+    let lastKey = "";
+    const frame = (now: number) => {
+      const t = now - t0;
+      const out: string[] = [];
+      for (let i = 0; i < lines.length; i++) {
+        const begin = ends[i] - lines[i].length * speed;
+        if (t < begin) break;
+        out.push(lines[i].slice(0, Math.min(lines[i].length, Math.floor((t - begin) / speed) + 1)));
+      }
+      const k = out.length + ":" + (out[out.length - 1]?.length ?? 0);
+      if (k !== lastKey) {
+        lastKey = k;
+        setShown(out);
+      }
+      if (t >= total) {
+        setShown(lines);
         setFinished(true);
         cb.current?.();
         return;
       }
-      const line = lines[li];
-      ci++;
-      acc[li] = line.slice(0, ci);
-      setShown([...acc]);
-      if (ci >= line.length) {
-        li++;
-        ci = 0;
-        timer = window.setTimeout(tick, linePause);
-      } else {
-        timer = window.setTimeout(tick, speed);
-      }
+      raf = requestAnimationFrame(frame);
     };
-    timer = window.setTimeout(tick, speed);
-    return () => clearTimeout(timer);
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, start, reduced, speed, linePause]);
 
@@ -324,5 +335,41 @@ export function ChapterHead({
       </div>
       {children}
     </header>
+  );
+}
+
+/* Pilule segmentée avec indicateur glissant. */
+export function Segmented<T extends string>({
+  options,
+  value,
+  onChange,
+  label,
+}: {
+  options: { id: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+  label: string;
+}) {
+  const root = useRef<HTMLDivElement>(null);
+  const [ind, setInd] = useState({ x: 4, w: 0 });
+  useEffect(() => {
+    const place = () => {
+      const b = root.current?.querySelector<HTMLElement>('[aria-pressed="true"]');
+      if (b) setInd({ x: b.offsetLeft, w: b.offsetWidth });
+    };
+    place();
+    window.addEventListener("resize", place);
+    void document.fonts?.ready.then(place);
+    return () => window.removeEventListener("resize", place);
+  }, [value]);
+  return (
+    <div ref={root} className="seg" role="group" aria-label={label}>
+      <span className="seg__ind" style={{ transform: `translateX(${ind.x}px)`, width: ind.w }} aria-hidden="true" />
+      {options.map((o) => (
+        <button key={o.id} type="button" className="seg__btn" aria-pressed={o.id === value} onClick={() => onChange(o.id)}>
+          {o.label}
+        </button>
+      ))}
+    </div>
   );
 }
