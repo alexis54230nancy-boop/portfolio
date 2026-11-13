@@ -121,14 +121,14 @@ export default function Connexion() {
   const sent = state === "sent";
 
   return (
-    <div className="min-h-[100svh] flex flex-col justify-center pt-24">
+    <div className="min-h-[100svh] flex flex-col justify-center pt-20">
       <div className="wrap max-w-[560px]! relative">
         {!three && <div className={`portal-css ${focus ? "is-open" : ""} ${sent ? "is-collapsed" : ""}`} aria-hidden="true" />}
-        <header className="mb-9">
+        <header className="mb-7">
           <p className="label mb-4">
             <span className="text-green">07</span> — CHAPITRE
           </p>
-          <h1 className="title !text-[clamp(36px,6vw,64px)] glitch">
+          <h1 className="title !text-[clamp(30px,5vw,56px)] glitch" data-text="CONNEXION">
             <Decode text="CONNEXION" speed={45} />
           </h1>
           <div className="mt-5 space-y-1">
@@ -147,7 +147,7 @@ export default function Connexion() {
             onFocus={() => setFocus(true)}
             onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setFocus(false)}
             aria-labelledby="form-t"
-            className="space-y-7"
+            className="space-y-5"
           >
             <h2 id="form-t" className="mono text-[13px] tracking-[0.18em] text-green">
               ENVOYER_UN_MESSAGE:
@@ -162,7 +162,7 @@ export default function Connexion() {
             </label>
             <label className="field">
               <span className="field__label">MESSAGE</span>
-              <textarea className="field__input" name="message" required rows={4} maxLength={4000} />
+              <textarea className="field__input" name="message" required rows={3} maxLength={4000} />
             </label>
             <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
             <div className="flex flex-wrap items-center gap-4">

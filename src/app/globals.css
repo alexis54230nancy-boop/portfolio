@@ -17,6 +17,7 @@
   --color-red: #ff0040;
 
   --font-mono: var(--font-jb), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-wide: var(--font-archivo), "Arial Black", var(--font-jb), sans-serif;
   --font-display: var(--font-grotesk), var(--font-jb), system-ui, sans-serif;
   --font-sans: var(--font-inter), "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -157,11 +158,29 @@ p {
   color: var(--green);
 }
 .title {
-  font-family: var(--font-mono);
-  font-size: clamp(40px, 7.4vw, 96px);
-  letter-spacing: -0.02em;
-  line-height: 0.98;
-  font-weight: 800;
+  position: relative;
+  font-family: var(--font-wide);
+  font-size: clamp(26px, 7vw, 104px);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--green);
+  text-shadow:
+    0 0 6px rgba(var(--green-rgb), 0.55),
+    0 0 24px rgba(var(--green-rgb), 0.4),
+    0 0 70px rgba(var(--green-rgb), 0.28);
+}
+/* Halo "photocopie" : une copie floue du titre derrière lui */
+.title[data-text]::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--green);
+  filter: blur(18px);
+  opacity: 0.55;
+  pointer-events: none;
 }
 .title-2 {
   font-family: var(--font-display);
@@ -516,7 +535,7 @@ button:hover > .glitch-perm {
 }
 textarea.field__input {
   resize: vertical;
-  min-height: 120px;
+  min-height: 88px;
 }
 @keyframes blink {
   0%, 49% { opacity: 1; }
@@ -607,6 +626,14 @@ textarea.field__input {
   .hud {
     padding: 20px 28px;
   }
+}
+.hud::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -28px 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.92) 30%, transparent);
+  pointer-events: none;
+  z-index: -1;
 }
 .hud > * {
   pointer-events: auto;
@@ -1088,20 +1115,50 @@ textarea.field__input {
 /* IDENTITÉ                                                            */
 /* ------------------------------------------------------------------ */
 
+/* Lueur diffuse derrière le portrait (vert + une pointe de bleu-vert) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(38% 46% at 80% 48%, rgba(var(--green-rgb), 0.13), transparent 70%),
+    radial-gradient(30% 34% at 66% 70%, rgba(0, 200, 170, 0.07), transparent 70%);
+  pointer-events: none;
+}
+.spark {
+  display: inline-block;
+  color: var(--green);
+  filter: drop-shadow(0 0 8px rgba(var(--green-rgb), 0.8));
+  animation: spark 5s ease-in-out infinite;
+}
+@keyframes spark {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.72) rotate(45deg); opacity: 0.55; }
+}
+/* Bloc de texte façon affiche : monospace, justifié, vert */
+.blockmono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  text-align: justify;
+  hyphens: auto;
+  color: color-mix(in srgb, var(--green) 82%, #000);
+  text-shadow: 0 0 12px rgba(var(--green-rgb), 0.25);
+}
 .hero {
   position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 96px 0 120px;
+  padding: 92px 0 clamp(120px, 15vw, 210px);
 }
 .hero__name {
-  font-family: var(--font-mono);
-  font-weight: 800;
-  font-size: clamp(48px, 10.2vw, 148px);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  font-family: var(--font-wide);
+  font-weight: 900;
+  font-size: clamp(44px, 9vw, 132px);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
   color: var(--color-text);
 }
 .hero__name span {
@@ -1109,18 +1166,23 @@ textarea.field__input {
 }
 .hero__name .is-green {
   color: var(--green);
-  text-shadow: 0 0 40px rgba(var(--green-rgb), 0.25);
+  text-shadow:
+    0 0 6px rgba(var(--green-rgb), 0.5),
+    0 0 26px rgba(var(--green-rgb), 0.4),
+    0 0 80px rgba(var(--green-rgb), 0.3);
 }
 
 .portrait {
   position: relative;
   width: min(280px, 62vw);
   aspect-ratio: 3 / 4;
-  border: 1px solid rgba(var(--green-rgb), 0.3);
-  border-radius: 4px;
+  border: 1px solid rgba(var(--green-rgb), 0.55);
+  border-radius: 999px;
   overflow: hidden;
   background: #000;
-  box-shadow: var(--glow);
+  outline: 1px solid rgba(var(--green-rgb), 0.22);
+  outline-offset: 9px;
+  box-shadow: 0 0 60px rgba(var(--green-rgb), 0.22), 0 0 140px rgba(var(--green-rgb), 0.12);
   transform-style: preserve-3d;
 }
 .duotone {
@@ -1147,8 +1209,10 @@ textarea.field__input {
 }
 .portrait__tag {
   position: absolute;
-  left: 10px;
-  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  bottom: 30px;
   z-index: 2;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -1161,25 +1225,25 @@ textarea.field__input {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 54px;
-  height: clamp(60px, 13vw, 190px);
+  bottom: 46px;
+  z-index: 0;
+  height: clamp(48px, 7.4vw, 108px);
   overflow: hidden;
   pointer-events: auto;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 85%);
   user-select: none;
 }
 .mirror__in {
-  transform: scaleY(-1);
+  transform: translateY(100%) scaleY(-1);
   transform-origin: 50% 0;
-  font-family: var(--font-mono);
-  font-weight: 800;
-  font-size: clamp(48px, 10.2vw, 148px);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  font-family: var(--font-wide);
+  font-weight: 900;
+  font-size: clamp(44px, 9vw, 132px);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
   color: var(--green);
-  opacity: 0.2;
+  opacity: 0.22;
   filter: url(#wave);
-  translate: 0 100%;
   white-space: nowrap;
 }
 
@@ -1233,10 +1297,9 @@ textarea.field__input {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 210px;
+  min-height: 250px;
   text-align: left;
   perspective: 1200px;
-  cursor: pointer;
 }
 .strate__hit {
   position: absolute;
@@ -1251,6 +1314,7 @@ textarea.field__input {
 .strate__tilt {
   position: relative;
   height: 100%;
+  min-height: inherit;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -1266,16 +1330,17 @@ textarea.field__input {
   transform: translateZ(-20px);
 }
 .strate__mid {
-  position: relative;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   border: 1px solid rgba(var(--green-rgb), 0.3);
   background: #111;
   overflow: hidden;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 .strate__front {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  height: 100%;
+  min-height: inherit;
   padding: 22px;
   display: flex;
   flex-direction: column;
@@ -1522,6 +1587,19 @@ dialog.dossier[open] {
   letter-spacing: 0.22em;
   color: var(--green);
   text-shadow: 0 0 14px rgba(var(--green-rgb), 0.7);
+}
+.vinyl__label {
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.3vw, 15px);
+  letter-spacing: 0.22em;
+  color: var(--green);
+  text-shadow: 0 0 14px rgba(var(--green-rgb), 0.7), 0 0 4px #000;
+  white-space: nowrap;
 }
 .passion-btn {
   display: flex;
@@ -1997,6 +2075,7 @@ dialog.dossier[open] {
     scroll-behavior: auto !important;
   }
   .breath,
+  .spark,
   .grain,
   .marquee__in,
   .hud__dot i,

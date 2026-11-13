@@ -16,7 +16,7 @@ export function create(ctx: Ctx): SceneHandle {
     wireframe: true,
     transparent: true,
     depthWrite: false,
-    uniforms: { uTime: { value: 0 }, uColor: { value: ctx.accent }, uOpacity: { value: 0.3 } },
+    uniforms: { uTime: { value: 0 }, uColor: { value: ctx.accent }, uOpacity: { value: 0.11 } },
     vertexShader: /* glsl */ `
       uniform float uTime;
       varying float vDepth;
@@ -25,7 +25,7 @@ export function create(ctx: Ctx): SceneHandle {
         float t = uTime * 0.35;
         float d = sin(p.x * 1.7 + t) * sin(p.y * 2.1 + t * 1.3) * sin(p.z * 2.6 + t * 0.7);
         d += 0.5 * sin(p.x * 3.9 - t * 1.1) * sin(p.y * 3.1 + t);
-        p += normal * d * 0.42;
+        p += normal * d * 0.34;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         vDepth = -mv.z;
         gl_Position = projectionMatrix * mv;
@@ -104,13 +104,13 @@ export function create(ctx: Ctx): SceneHandle {
       torus.rotation.y = 0.3 + t * 0.07;
       // Le tore se place derrière le nom, légèrement à droite sur grand écran.
       const hw = halfHeight(camera, 8) * ctx.size.aspect;
-      group.position.x = ctx.size.aspect > 1.2 ? hw * 0.34 : 0;
+      group.position.x = ctx.size.aspect > 1.2 ? hw * 0.46 : 0;
       group.rotation.x = damp(group.rotation.x, signals.mouse.y * 0.12, 3, dt || 0.016);
       group.rotation.y = damp(group.rotation.y, signals.mouse.x * 0.16, 3, dt || 0.016);
       // Plongée : la page d'accueil fait ~3 écrans, la caméra recule avec le scroll.
       camZ = damp(camZ, 8 + signals.scroll * 16, 4, dt || 0.016);
       camera.position.z = camZ;
-      torusMat.uniforms.uOpacity.value = 0.3 - signals.scroll * 0.14;
+      torusMat.uniforms.uOpacity.value = 0.12 - signals.scroll * 0.07;
     },
   };
 }

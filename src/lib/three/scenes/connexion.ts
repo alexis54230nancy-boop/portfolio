@@ -74,6 +74,8 @@ export function create(ctx: Ctx): SceneHandle {
       const c = signals.portal.collapse;
       const breath = 1 + 0.02 * (0.5 + 0.5 * Math.sin((t * Math.PI * 2) / 4));
       group.rotation.x = -THREE.MathUtils.degToRad(5 + open * 5);
+      // Le portail reste accroché au formulaire quand la page défile.
+      group.position.y = (window.scrollY * (halfHeight(camera, 10) * 2)) / ctx.size.h - 0.25;
       group.scale.setScalar(breath);
       mat.uniforms.uOpacity.value = 0.3 + open * 0.45;
 

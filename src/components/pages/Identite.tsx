@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { identite, site } from "@/lib/content";
 import { asset, eggs, local } from "@/lib/store";
-import { Decode, Reveal, SysLink } from "../ui";
+import { Decode, Reveal, Spark, SysLink } from "../ui";
 import { useSystem } from "../system/context";
 
 /** PAGE 1 — IDENTITÉ : le nom, le portrait, deux commandes. */
@@ -87,7 +87,7 @@ export default function Identite() {
             <div className="css-torus" />
           </div>
         )}
-        <div className="wrap relative grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
+        <div className="wrap relative z-10 grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
           <div>
             <p className="label mb-6">
               <span className="text-green">01</span> — IDENTITÉ
@@ -120,7 +120,9 @@ export default function Identite() {
               )}
             </div>
           </div>
-          <div ref={portrait} className="portrait duotone justify-self-start md:justify-self-end md:mb-2">
+          <div className="relative justify-self-start md:justify-self-end md:mb-2 md:mr-4">
+            <Spark size={46} className="absolute -top-9 -right-7 z-10 hidden md:block" />
+          <div ref={portrait} className="portrait duotone">
             <img
               src={asset("/img/portrait.webp")}
               srcSet={`${asset("/img/portrait-sm.webp")} 360w, ${asset("/img/portrait.webp")} 720w`}
@@ -131,7 +133,8 @@ export default function Identite() {
               fetchPriority="high"
               decoding="async"
             />
-            <span className="portrait__tag" aria-hidden="true">HÔTE_BIOLOGIQUE.webp</span>
+            <span className="portrait__tag" aria-hidden="true">HÔTE_BIOLOGIQUE</span>
+          </div>
           </div>
         </div>
 
@@ -154,23 +157,23 @@ export default function Identite() {
           <span className="text-green">&gt;</span> README.md
         </h2>
         <div className="grid gap-12 md:grid-cols-[1.25fr_1fr]">
-          <div className="space-y-5">
-            <Decode
-              as="p"
-              mode="type"
-              className="title-2"
-              text="Tu n'es pas un visiteur. Tu es un hôte."
-            />
-            <p className="max-w-[58ch] text-[#cfcfcf]">
-              Ce que tu vas voir n'est pas tout à fait un portfolio. C'est un système qui essaie de comprendre
-              pourquoi il existe : chaque chapitre est une couche de ce que j'ai construit, appris ou traversé.
+          <div className="space-y-6">
+            <Decode as="p" mode="type" className="title-2" text="Tu n'es pas un visiteur. Tu es un hôte." />
+            <div className="grid gap-6 sm:grid-cols-2">
+              <p className="blockmono">
+                Ce que tu vas voir n'est pas tout à fait un portfolio. C'est un système qui essaie de comprendre
+                pourquoi il existe : chaque chapitre est une couche de ce que j'ai construit, appris ou traversé. Rien
+                n'y est décoratif. Tout ce qui bouge ici a été écrit pour dire quelque chose.
+              </p>
+              <p className="blockmono">
+                Avant le code, il y a eu le commerce : un BTS en alternance et deux ans de terrain comme commercial
+                itinérant. J'y ai appris à écouter un besoin avant de proposer une solution. Aujourd'hui, je me forme au
+                développement et à la cybersécurité à Epitech Nancy, et je construis mes propres produits.
+              </p>
+            </div>
+            <p className="sys pt-1 flex items-center gap-3">
+              <Spark size={16} /> « {site.mantra} »
             </p>
-            <p className="max-w-[58ch] fact">
-              Avant le code, il y a eu le commerce : un BTS en alternance et deux ans de terrain comme commercial
-              itinérant. J'y ai appris à écouter un besoin avant de proposer une solution. Aujourd'hui, je me forme
-              au développement et à la cybersécurité à Epitech Nancy, et je construis mes propres produits.
-            </p>
-            <p className="sys pt-2">« {site.mantra} »</p>
           </div>
           <Reveal as="ul" className="mono text-[13px] self-end">
             {[

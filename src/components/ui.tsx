@@ -308,6 +308,15 @@ export function Typewriter({
   );
 }
 
+/* Étoile à quatre branches : motif récurrent du système. */
+export function Spark({ size = 28, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg className={`spark ${className}`} width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M12 0c.8 7 5 11.200 12 12-7 .800-11.200 5-12 12-.800-7-5-11.200-12-12 7-.800 11.200-5 12-12z" />
+    </svg>
+  );
+}
+
 /* Titre de chapitre : numéro + nom + phrases narratives. */
 export function ChapterHead({
   num,
@@ -322,8 +331,11 @@ export function ChapterHead({
 }) {
   return (
     <header className="wrap pt-28 md:pt-36 pb-10 md:pb-16">
-      <p className="label mb-5">
-        <span className="text-green">{num}</span> — CHAPITRE
+      <p className="label mb-5 flex items-center gap-3">
+        <Spark size={14} />
+        <span>
+          <span className="text-green">{num}</span> — CHAPITRE
+        </span>
       </p>
       <h1 className="title glitch" data-text={title}>
         <Decode text={title} speed={45} />

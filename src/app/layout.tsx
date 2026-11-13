@@ -20,6 +20,13 @@ const grotesk = localFont({
   variable: "--font-grotesk",
   display: "swap",
 });
+// Archivo Expanded Black : instance statique réduite aux caractères latins (10 Ko).
+const wide = localFont({
+  src: "../fonts/archivo-expanded-black.woff2",
+  weight: "900",
+  variable: "--font-archivo",
+  display: "swap",
+});
 const inter = localFont({
   src: "../fonts/inter-latin-wght-normal.woff2",
   weight: "100 900",
@@ -95,7 +102,7 @@ const plausible = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="fr" className={`no-js ${mono.variable} ${grotesk.variable} ${inter.variable}`}>
+    <html lang="fr" className={`no-js ${mono.variable} ${grotesk.variable} ${inter.variable} ${wide.variable}`}>
       <body>
         <Shell>{children}</Shell>
         <noscript>

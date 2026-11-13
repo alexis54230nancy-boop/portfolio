@@ -72,7 +72,8 @@ export function create(ctx: Ctx): SceneHandle {
       const f = signals.freq;
       const wide = ctx.size.aspect > 1.15;
       const hw = halfHeight(camera, 11) * ctx.size.aspect;
-      ring.position.x = wide ? hw * 0.44 : 0;
+      ring.position.x = wide ? hw * 0.42 : 0;
+      ring.scale.setScalar(0.86);
       vinyl.position.x = wide ? -hw * 0.4 : 0;
 
       /* Anneau */

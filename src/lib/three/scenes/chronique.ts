@@ -16,10 +16,10 @@ export function create(ctx: Ctx): SceneHandle {
 
   const pts = Array.from({ length: N + 2 }, (_, k) => {
     const i = k - 1;
-    return new THREE.Vector3(Math.sin(i * 1.15) * 2.6, Math.cos(i * 0.8) * 0.9 - 0.4, -i * GAP);
+    return new THREE.Vector3(Math.sin(i * 1.15) * 1.5, Math.cos(i * 0.8) * 0.7 - 0.4, -i * GAP);
   });
   const curve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.5);
-  const tubeMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.5 });
+  const tubeMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.38 });
   scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 360, 0.018, 6, false), tubeMat));
 
   const nodes = Array.from({ length: N }, (_, i) => {
@@ -91,8 +91,8 @@ export function create(ctx: Ctx): SceneHandle {
       const u = (p * (N - 1) + 1) / (N + 1);
       curve.getPoint(Math.max(0, u - 0.045), target);
       curve.getPoint(Math.min(1, u + 0.05), look);
-      camera.position.set(target.x * 0.35 + signals.mouse.x * 0.4, target.y + 1.1 + signals.mouse.y * 0.2, target.z + 5.2);
-      camera.lookAt(look.x * 0.8, look.y, look.z);
+      camera.position.set(target.x + signals.mouse.x * 0.3, target.y + 1.7 + signals.mouse.y * 0.15, target.z + 4.6);
+      camera.lookAt(look.x, look.y + 0.9, look.z);
       rainMat.uniforms.uTime.value = t;
       rainGeo.setDrawRange(0, Math.floor(RAIN * signals.quality) * 2);
       tubeMat.color.copy(ctx.accent);

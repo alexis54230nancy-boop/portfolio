@@ -40,8 +40,9 @@ export default function Frequences() {
       const b = secB.current?.getBoundingClientRect();
       if (a) {
         // Progression dans la section A : 0 (elle arrive) → 1 (elle est passée).
-        const p = clamp01(-a.top / Math.max(1, a.height - vh));
-        signals.freq.disperse = reduced ? (p > 0.8 ? 1 : 0) : smooth(0.5, 0.98, p);
+        // L'anneau se disperse quand la fin de la section approche du haut de l'écran.
+        const p = clamp01((vh * 1.15 - a.bottom) / (vh * 0.75));
+        signals.freq.disperse = reduced ? (p > 0.5 ? 1 : 0) : smooth(0, 1, p);
       }
       if (b) {
         const arriving = smooth(vh * 0.75, vh * 0.1, b.top);
@@ -73,9 +74,9 @@ export default function Frequences() {
       />
 
       {/* ---------- Compétences ---------- */}
-      <section ref={secA} className="relative md:min-h-[230vh]" aria-labelledby="competences">
-        <div className="md:sticky md:top-0 md:h-screen md:flex md:items-center">
-          <div className="wrap grid gap-10 md:grid-cols-2 md:items-center">
+      <section ref={secA} className="relative md:pb-[70vh]" aria-labelledby="competences">
+        <div>
+          <div className="wrap grid gap-10 md:grid-cols-2 md:items-start">
             <div>
               <h2 id="competences" className="label mb-6">
                 <span className="text-green">&gt;</span> SPECTRE DES COMPÉTENCES
@@ -128,7 +129,7 @@ export default function Frequences() {
         <div className="md:sticky md:top-0 md:h-screen md:flex md:items-center">
           {/* Le nom de la passion apparaît au centre du vinyle 3D */}
           {three && (
-            <div className="vinyl__center !inset-auto" style={{ left: "30%", top: "50%", transform: "translate(-50%, -50%)" }} aria-hidden="true">
+            <div className="vinyl__label" aria-hidden="true">
               {passion >= 0 ? passions[passion].name : ""}
             </div>
           )}

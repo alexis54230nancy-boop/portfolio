@@ -195,7 +195,7 @@ export default function Strates() {
         </div>
         <ul className="bento">
           {projects.map((p, i) => (
-            <li key={p.id} className="min-h-[230px]">
+            <li key={p.id}>
               <Strate p={p} index={i} dim={!matches(p)} onOpen={setOpen} />
             </li>
           ))}
