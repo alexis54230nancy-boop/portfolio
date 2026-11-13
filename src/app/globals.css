@@ -17,6 +17,7 @@
   --color-red: #ff0040;
 
   --font-mono: var(--font-jb), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-wide: var(--font-archivo), "Arial Black", var(--font-jb), sans-serif;
   --font-display: var(--font-grotesk), var(--font-jb), system-ui, sans-serif;
   --font-sans: var(--font-inter), "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -30,8 +31,8 @@
   --green-cold: #004d26;
   --green-rgb: 0, 255, 65;
   /* Gris "système" : la maquette demandait #333, illisible sur noir.
-     #7a7a7a garde l'effet estompé tout en respectant le contraste AA. */
-  --dim: #7a7a7a;
+     #868686 garde l'effet estompé tout en respectant le contraste AA. */
+  --dim: #868686;
   --glow: 0 0 20px rgba(var(--green-rgb), 0.15);
   --glow-strong: 0 0 28px rgba(var(--green-rgb), 0.35);
   --dock-h: 76px;
@@ -157,11 +158,30 @@ p {
   color: var(--green);
 }
 .title {
-  font-family: var(--font-mono);
-  font-size: clamp(40px, 7.4vw, 96px);
-  letter-spacing: -0.02em;
-  line-height: 0.98;
-  font-weight: 800;
+  position: relative;
+  font-family: var(--font-wide);
+  /* --len = nombre de lettres : le titre occupe la largeur disponible sans déborder */
+  font-size: clamp(26px, calc((100vw - 48px) / var(--len, 12) * 1.2), 104px);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--green);
+  text-shadow:
+    0 0 6px rgba(var(--green-rgb), 0.55),
+    0 0 24px rgba(var(--green-rgb), 0.4),
+    0 0 70px rgba(var(--green-rgb), 0.28);
+}
+/* Halo "photocopie" : une copie floue du titre derrière lui */
+.title[data-text]::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--green);
+  filter: blur(18px);
+  opacity: 0.55;
+  pointer-events: none;
 }
 .title-2 {
   font-family: var(--font-display);
@@ -516,7 +536,7 @@ button:hover > .glitch-perm {
 }
 textarea.field__input {
   resize: vertical;
-  min-height: 120px;
+  min-height: 88px;
 }
 @keyframes blink {
   0%, 49% { opacity: 1; }
@@ -608,6 +628,14 @@ textarea.field__input {
     padding: 20px 28px;
   }
 }
+.hud::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -28px 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.92) 30%, transparent);
+  pointer-events: none;
+  z-index: -1;
+}
 .hud > * {
   pointer-events: auto;
 }
@@ -673,7 +701,8 @@ textarea.field__input {
   padding: 8px 10px;
   border: 1px solid rgba(var(--green-rgb), 0.1);
   border-radius: 20px;
-  background: rgba(var(--green-rgb), 0.05);
+  /* verre liquide : teinte verte à 5 % posée sur un noir presque opaque, pour rester lisible */
+  background: linear-gradient(rgba(var(--green-rgb), 0.05), rgba(var(--green-rgb), 0.05)), rgba(4, 8, 5, 0.86);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -1088,20 +1117,50 @@ textarea.field__input {
 /* IDENTITÉ                                                            */
 /* ------------------------------------------------------------------ */
 
+/* Lueur diffuse derrière le portrait (vert + une pointe de bleu-vert) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(38% 46% at 80% 48%, rgba(var(--green-rgb), 0.13), transparent 70%),
+    radial-gradient(30% 34% at 66% 70%, rgba(0, 200, 170, 0.07), transparent 70%);
+  pointer-events: none;
+}
+.spark {
+  display: inline-block;
+  color: var(--green);
+  filter: drop-shadow(0 0 8px rgba(var(--green-rgb), 0.8));
+  animation: spark 5s ease-in-out infinite;
+}
+@keyframes spark {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.72) rotate(45deg); opacity: 0.55; }
+}
+/* Bloc de texte façon affiche : monospace, justifié, vert */
+.blockmono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  text-align: justify;
+  hyphens: auto;
+  color: color-mix(in srgb, var(--green) 82%, #000);
+  text-shadow: 0 0 12px rgba(var(--green-rgb), 0.25);
+}
 .hero {
   position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 96px 0 120px;
+  padding: 92px 0 clamp(120px, 15vw, 210px);
 }
 .hero__name {
-  font-family: var(--font-mono);
-  font-weight: 800;
-  font-size: clamp(48px, 10.2vw, 148px);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  font-family: var(--font-wide);
+  font-weight: 900;
+  font-size: clamp(44px, 9vw, 132px);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
   color: var(--color-text);
 }
 .hero__name span {
@@ -1109,18 +1168,23 @@ textarea.field__input {
 }
 .hero__name .is-green {
   color: var(--green);
-  text-shadow: 0 0 40px rgba(var(--green-rgb), 0.25);
+  text-shadow:
+    0 0 6px rgba(var(--green-rgb), 0.5),
+    0 0 26px rgba(var(--green-rgb), 0.4),
+    0 0 80px rgba(var(--green-rgb), 0.3);
 }
 
 .portrait {
   position: relative;
   width: min(280px, 62vw);
   aspect-ratio: 3 / 4;
-  border: 1px solid rgba(var(--green-rgb), 0.3);
-  border-radius: 4px;
+  border: 1px solid rgba(var(--green-rgb), 0.55);
+  border-radius: 999px;
   overflow: hidden;
   background: #000;
-  box-shadow: var(--glow);
+  outline: 1px solid rgba(var(--green-rgb), 0.22);
+  outline-offset: 9px;
+  box-shadow: 0 0 60px rgba(var(--green-rgb), 0.22), 0 0 140px rgba(var(--green-rgb), 0.12);
   transform-style: preserve-3d;
 }
 .duotone {
@@ -1147,8 +1211,10 @@ textarea.field__input {
 }
 .portrait__tag {
   position: absolute;
-  left: 10px;
-  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  bottom: 30px;
   z-index: 2;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -1161,25 +1227,25 @@ textarea.field__input {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 54px;
-  height: clamp(60px, 13vw, 190px);
+  bottom: 46px;
+  z-index: 0;
+  height: clamp(48px, 7.4vw, 108px);
   overflow: hidden;
   pointer-events: auto;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 85%);
   user-select: none;
 }
 .mirror__in {
-  transform: scaleY(-1);
+  transform: translateY(100%) scaleY(-1);
   transform-origin: 50% 0;
-  font-family: var(--font-mono);
-  font-weight: 800;
-  font-size: clamp(48px, 10.2vw, 148px);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  font-family: var(--font-wide);
+  font-weight: 900;
+  font-size: clamp(44px, 9vw, 132px);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
   color: var(--green);
-  opacity: 0.2;
+  opacity: 0.22;
   filter: url(#wave);
-  translate: 0 100%;
   white-space: nowrap;
 }
 
@@ -1233,14 +1299,24 @@ textarea.field__input {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 210px;
+  min-height: 250px;
   text-align: left;
   perspective: 1200px;
+}
+.strate__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: 4px;
   cursor: pointer;
+}
+.strate--locked .strate__hit {
+  cursor: not-allowed;
 }
 .strate__tilt {
   position: relative;
   height: 100%;
+  min-height: inherit;
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -1256,16 +1332,17 @@ textarea.field__input {
   transform: translateZ(-20px);
 }
 .strate__mid {
-  position: relative;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   border: 1px solid rgba(var(--green-rgb), 0.3);
   background: #111;
   overflow: hidden;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 .strate__front {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  height: 100%;
+  min-height: inherit;
   padding: 22px;
   display: flex;
   flex-direction: column;
@@ -1275,7 +1352,7 @@ textarea.field__input {
   pointer-events: none;
 }
 .strate:hover .strate__mid,
-.strate:focus-visible .strate__mid {
+.strate:focus-within .strate__mid {
   border-color: rgba(var(--green-rgb), 0.8);
   box-shadow: var(--glow), inset 0 0 60px rgba(var(--green-rgb), 0.04);
 }
@@ -1292,12 +1369,12 @@ textarea.field__input {
   opacity: 0;
 }
 .strate:hover .strate__mid::after,
-.strate:focus-visible .strate__mid::after {
+.strate:focus-within .strate__mid::after {
   animation: card-scan 500ms linear 1;
 }
 @keyframes card-scan {
-  0% { transform: translateY(0); opacity: 0.9; }
-  100% { transform: translateY(var(--card-h, 420px)); opacity: 0.2; }
+  0% { top: 0; opacity: 0.9; }
+  100% { top: 100%; opacity: 0.2; }
 }
 .strate__num {
   font-family: var(--font-mono);
@@ -1513,6 +1590,19 @@ dialog.dossier[open] {
   color: var(--green);
   text-shadow: 0 0 14px rgba(var(--green-rgb), 0.7);
 }
+.vinyl__label {
+  position: absolute;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.3vw, 15px);
+  letter-spacing: 0.22em;
+  color: var(--green);
+  text-shadow: 0 0 14px rgba(var(--green-rgb), 0.7), 0 0 4px #000;
+  white-space: nowrap;
+}
 .passion-btn {
   display: flex;
   align-items: baseline;
@@ -1562,6 +1652,11 @@ dialog.dossier[open] {
   line-height: 2.1;
   color: var(--color-text);
   text-shadow: 0 0 20px #000, 0 0 6px #000;
+}
+@media (min-width: 900px) {
+  .frag-frame .frag-text {
+    max-width: min(560px, 40vw);
+  }
 }
 .frag-text p:empty {
   height: 1em;
@@ -1987,6 +2082,7 @@ dialog.dossier[open] {
     scroll-behavior: auto !important;
   }
   .breath,
+  .spark,
   .grain,
   .marquee__in,
   .hud__dot i,
@@ -2019,5 +2115,67 @@ dialog.dossier[open] {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: #0a0a0a;
+  }
+}
+
+/* Repli CSS 3D du tore (mobile, ou WebGL indisponible) */
+.css-torus {
+  position: absolute;
+  top: 12%;
+  right: -30vw;
+  width: 90vw;
+  aspect-ratio: 1;
+  max-width: 620px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--green-rgb), 0.16);
+  box-shadow:
+    0 0 0 28px rgba(var(--green-rgb), 0.02),
+    inset 0 0 0 44px rgba(var(--green-rgb), 0.02),
+    inset 0 0 0 45px rgba(var(--green-rgb), 0.12),
+    inset 0 0 0 88px rgba(var(--green-rgb), 0.015),
+    inset 0 0 0 89px rgba(var(--green-rgb), 0.08);
+  transform: perspective(800px) rotateX(62deg) rotateZ(0deg);
+  animation: css-torus 40s linear infinite;
+}
+@keyframes css-torus {
+  to { transform: perspective(800px) rotateX(62deg) rotateZ(360deg); }
+}
+
+/* Fragment — silhouette SVG de repli */
+.frag-svg .frag-up,
+.frag-svg .frag-down {
+  transition: transform 1.2s var(--ease-out), opacity 1.2s;
+}
+.frag-svg .frag-eye {
+  opacity: 0;
+}
+.frag-svg[data-frame="1"] .frag-down {
+  opacity: 0.45;
+  transform: translateY(10px);
+}
+.frag-svg[data-frame="3"] .frag-up {
+  transform: translate(12px, -14px);
+}
+.frag-svg[data-frame="3"] .frag-down {
+  transform: translate(-12px, 14px);
+}
+.frag-svg[data-frame="4"] .frag-eye {
+  opacity: 1;
+  animation: blink 2.4s steps(1) infinite;
+}
+.frag-svg.is-named svg {
+  animation: frag-pulse 0.5s ease-in-out 3;
+}
+@keyframes frag-pulse {
+  50% { filter: drop-shadow(0 0 14px var(--green)); stroke-width: 1.6; }
+}
+.frag-svg.is-leaving {
+  transition: opacity 4s ease-in, transform 4s ease-in !important;
+  opacity: 0 !important;
+  transform: scale(0.6);
+}
+@media (max-width: 767px) {
+  .frag-frame {
+    min-height: 110vh;
   }
 }

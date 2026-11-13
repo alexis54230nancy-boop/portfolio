@@ -91,12 +91,13 @@ export class Stage {
     const dt = this.last ? Math.min(0.05, (now - this.last) / 1000) : 0.016;
     this.last = now;
     // Adaptation : sous 30 images/s pendant 2 s, on divise les particules par deux.
+    if (signals.paused) return;
     if (dt > 1 / 30) this.slow += dt;
     else this.slow = Math.max(0, this.slow - dt * 0.5);
     if (this.slow > 2 && signals.quality === 1) signals.quality = 0.5;
     if (!signals.frozen) this.time += dt;
     this.ctx.accent.copy(GREEN).lerp(RED, signals.deep);
-    if (!this.current) return;
+    if (!this.current || signals.paused) return;
     this.current.update(this.time, signals.frozen ? 0 : dt);
     this.renderer.render(this.current.scene, this.current.camera);
   };

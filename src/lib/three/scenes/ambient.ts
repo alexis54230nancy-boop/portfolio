@@ -7,7 +7,7 @@ export function create(ctx: Ctx): SceneHandle {
   const scene = new THREE.Scene();
   const camera = makeCamera(55, 6);
   camera.position.set(0, 1.4, 6);
-  camera.lookAt(0, 0.6, -10);
+  camera.lookAt(0, 3.2, -10);
 
   const N = 44;
   const STEP = 2;
@@ -30,13 +30,13 @@ export function create(ctx: Ctx): SceneHandle {
         vec3 p = position;
         p.z = mod(p.z + uOffset + 44.0, 88.0) - 44.0;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
-        vFade = smoothstep(46.0, 6.0, -mv.z) * smoothstep(0.0, 4.0, -mv.z);
+        vFade = smoothstep(30.0, 5.0, -mv.z) * smoothstep(0.0, 4.0, -mv.z);
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 uColor;
       varying float vFade;
-      void main() { gl_FragColor = vec4(uColor, vFade * 0.16); }`,
+      void main() { gl_FragColor = vec4(uColor, vFade * 0.11); }`,
   });
   const grid = new THREE.LineSegments(geo, mat);
   grid.position.y = -1.6;
@@ -49,7 +49,7 @@ export function create(ctx: Ctx): SceneHandle {
       // Les lignes transversales défilent vers le visiteur ; le scroll accélère.
       mat.uniforms.uOffset.value = (t * 0.35 + signals.scroll * 30) % 2;
       camera.position.x = signals.mouse.x * 0.3;
-      camera.lookAt(0, 0.6, -10);
+      camera.lookAt(0, 3.2, -10);
     },
   };
 }
