@@ -31,8 +31,8 @@
   --green-cold: #004d26;
   --green-rgb: 0, 255, 65;
   /* Gris "système" : la maquette demandait #333, illisible sur noir.
-     #7a7a7a garde l'effet estompé tout en respectant le contraste AA. */
-  --dim: #7a7a7a;
+     #868686 garde l'effet estompé tout en respectant le contraste AA. */
+  --dim: #868686;
   --glow: 0 0 20px rgba(var(--green-rgb), 0.15);
   --glow-strong: 0 0 28px rgba(var(--green-rgb), 0.35);
   --dock-h: 76px;
@@ -160,7 +160,8 @@ p {
 .title {
   position: relative;
   font-family: var(--font-wide);
-  font-size: clamp(26px, 7vw, 104px);
+  /* --len = nombre de lettres : le titre occupe la largeur disponible sans déborder */
+  font-size: clamp(26px, calc((100vw - 48px) / var(--len, 12) * 1.2), 104px);
   letter-spacing: -0.035em;
   line-height: 0.95;
   font-weight: 900;
@@ -700,7 +701,8 @@ textarea.field__input {
   padding: 8px 10px;
   border: 1px solid rgba(var(--green-rgb), 0.1);
   border-radius: 20px;
-  background: rgba(var(--green-rgb), 0.05);
+  /* verre liquide : teinte verte à 5 % posée sur un noir presque opaque, pour rester lisible */
+  background: linear-gradient(rgba(var(--green-rgb), 0.05), rgba(var(--green-rgb), 0.05)), rgba(4, 8, 5, 0.86);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -1650,6 +1652,11 @@ dialog.dossier[open] {
   line-height: 2.1;
   color: var(--color-text);
   text-shadow: 0 0 20px #000, 0 0 6px #000;
+}
+@media (min-width: 900px) {
+  .frag-frame .frag-text {
+    max-width: min(560px, 40vw);
+  }
 }
 .frag-text p:empty {
   height: 1em;

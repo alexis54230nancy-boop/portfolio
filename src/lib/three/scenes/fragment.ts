@@ -57,6 +57,20 @@ function buildBody() {
     position.set(c, o);
     o += c.length;
   }
+  // Érosion : chaque sommet est décalé d'un souffle (même décalage pour les
+  // sommets partagés, donc aucune fissure) — le corps perd son aspect de mannequin.
+  const hash = (x: number, y: number, z: number, k: number) => {
+    const h = Math.sin(x * 127.1 + y * 311.7 + z * 74.7 + k * 19.19) * 43758.5453;
+    return h - Math.floor(h) - 0.5;
+  };
+  for (let i = 0; i < total; i += 3) {
+    const x = Math.round(position[i] * 500) / 500;
+    const y = Math.round(position[i + 1] * 500) / 500;
+    const z = Math.round(position[i + 2] * 500) / 500;
+    position[i] = x + hash(x, y, z, 1) * 0.045;
+    position[i + 1] = y + hash(x, y, z, 2) * 0.045;
+    position[i + 2] = z + hash(x, y, z, 3) * 0.045;
+  }
   const faces = total / 9;
   const bary = new Float32Array(total);
   const centroid = new Float32Array(total);
@@ -108,7 +122,7 @@ export function create(ctx: Ctx): SceneHandle {
       uExplode: { value: 0 },
       uMissing: { value: 0.05 },
       uGlitch: { value: 0 },
-      uLine: { value: 0.42 },
+      uLine: { value: 0.36 },
       uVisible: { value: 0 },
     },
     vertexShader: /* glsl */ `
@@ -133,8 +147,8 @@ export function create(ctx: Ctx): SceneHandle {
         // Le nom : explosion en particules.
         float e = uExplode;
         vec3 dir = normalize(c + (aRnd - 0.5) * 1.5 + vec3(0.0001));
-        c += dir * e * (1.5 + aRnd.z * 6.0);
-        local = rot(normalize(aRnd.zxy - 0.5), e * 8.0 * aRnd.x) * local * (1.0 - e * 0.8);
+        c += dir * e * (0.8 + aRnd.z * 3.6);
+        local = rot(normalize(aRnd.zxy - 0.5), e * 8.0 * aRnd.x) * local * (1.0 - e * 0.45);
 
         // Glitch : tranches horizontales décalées.
         float band = step(0.5, fract(c.y * 2.6 + uTime * 13.0));
@@ -218,7 +232,7 @@ export function create(ctx: Ctx): SceneHandle {
   body.add(dust);
 
   let phase = 0;
-  let dist = 6;
+  let dist = 6.9;
   let near = 0;
   let facing = 0;
   let split = 0;
@@ -229,6 +243,11 @@ export function create(ctx: Ctx): SceneHandle {
   return {
     scene,
     camera,
+    resize(w, h) {
+      // Grand écran : la silhouette est décalée vers la droite pour laisser le texte respirer.
+      if (w / h > 1.2) camera.setViewOffset(w, h, -w * 0.14, 0, w, h);
+      else camera.clearViewOffset();
+    },
     update(t, dt) {
       const d = dt || 0.016;
       const f = signals.fragment;
@@ -251,7 +270,7 @@ export function create(ctx: Ctx): SceneHandle {
       u.uExplode.value = f.explode;
       u.uMissing.value = 0.05 + Math.min(0.14, f.t * 0.16);
       u.uGlitch.value = f.glitch;
-      u.uLine.value = 0.42 + f.pulse * 0.58 + near * 0.08;
+      u.uLine.value = 0.36 + f.pulse * 0.64 + near * 0.08;
       u.uVisible.value = visible;
       pMat.uniforms.uPhase.value = phase;
       pMat.uniforms.uVisible.value = visible * (1 - f.explode);
@@ -261,11 +280,11 @@ export function create(ctx: Ctx): SceneHandle {
       // Flotte, respire.
       const breath = 1 + 0.01 * Math.sin(t * 1.5) + near * 0.02;
       pivot.scale.setScalar(breath);
-      pivot.position.y = Math.sin(t * 0.7) * 0.07 + 0.25;
+      pivot.position.y = Math.sin(t * 0.7) * 0.07 + 0.42;
 
       // La caméra tourne de 360° autour de lui au fil des cinq premières frames.
       const theta = Math.PI + f.t * Math.PI * 2;
-      dist = damp(dist, 6.2 - f.approach * 2.4 + turn * 9, 2.5, d);
+      dist = damp(dist, 6.9 - f.approach * 2.8 + turn * 9, 2.5, d);
       camera.position.set(Math.sin(theta) * dist, 0.35, Math.cos(theta) * dist);
       camera.lookAt(0, 0.2, 0);
 

@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="label mb-5">
         <span className="text-green">404</span> — ERREUR SYSTÈME
       </p>
-      <h1 className="title" data-text="INTROUVABLE">
+      <h1 className="title" data-text="INTROUVABLE" style={{ ["--len" as string]: 11 }}>
         INTROUVABLE
       </h1>
       <p className="sys mt-6">Cette strate n'existe pas. Ou elle n'existe plus.</p>

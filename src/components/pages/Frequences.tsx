@@ -83,8 +83,8 @@ export default function Frequences() {
               </h2>
               <ul className="space-y-3">
                 {skillGroups.map((g, i) => (
-                  <li
-                    key={g.id}
+                  <li key={g.id}>
+                  <div
                     className={`freq-group ${group === i ? "is-on" : ""}`}
                     onPointerEnter={() => setGroup(i)}
                     onPointerLeave={() => setGroup(-1)}
@@ -107,6 +107,7 @@ export default function Frequences() {
                         </li>
                       ))}
                     </ul>
+                  </div>
                   </li>
                 ))}
               </ul>

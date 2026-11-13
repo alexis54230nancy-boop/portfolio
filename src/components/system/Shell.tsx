@@ -403,6 +403,9 @@ export default function Shell({ children }: { children: ReactNode }) {
       <a className="skip-link" href="#contenu">
         Aller au contenu
       </a>
+      <a className="skip-link" href="#navigation" style={{ left: 190 }}>
+        Aller à la navigation
+      </a>
 
       <canvas id="stage" className={`layer ${three ? "is-on" : ""}`} aria-hidden="true" />
       <Rain paused={reduced} />

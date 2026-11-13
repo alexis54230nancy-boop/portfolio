@@ -53,7 +53,7 @@ export default function Dock({ hidden }: { hidden: boolean }) {
             </button>
           </div>
         )}
-        <nav className={`dock dock--mobile ${hidden ? "is-hidden" : ""}`} aria-label="Navigation principale" style={{ zIndex: 79 }}>
+        <nav id="navigation" tabIndex={-1} className={`dock dock--mobile ${hidden ? "is-hidden" : ""}`} aria-label="Navigation principale" style={{ zIndex: 79 }}>
           <SysLink className="dock__item" href={prev.href} aria-label={`Chapitre précédent : ${prev.label}`}>
             <ChevronIcon dir="left" />
           </SysLink>
@@ -79,7 +79,7 @@ export default function Dock({ hidden }: { hidden: boolean }) {
   }
 
   return (
-    <nav className={`dock ${hidden ? "is-hidden" : ""}`} aria-label="Navigation principale">
+    <nav id="navigation" tabIndex={-1} className={`dock ${hidden ? "is-hidden" : ""}`} aria-label="Navigation principale">
       {main.map((c) => (
         <SysLink
           key={c.id}

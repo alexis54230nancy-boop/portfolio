@@ -337,7 +337,7 @@ export function ChapterHead({
           <span className="text-green">{num}</span> — CHAPITRE
         </span>
       </p>
-      <h1 className="title glitch" data-text={title}>
+      <h1 className="title glitch" data-text={title} style={{ ["--len" as string]: title.length }}>
         <Decode text={title} speed={45} />
       </h1>
       <div className="mt-7 max-w-[62ch] space-y-1">

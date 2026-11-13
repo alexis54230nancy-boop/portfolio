@@ -91,7 +91,7 @@ export default function Fichier() {
         <p className="label mb-5">
           <span className="text-green">05</span> — CHAPITRE
         </p>
-        <h1 className="title glitch" data-text="FICHIER_PERSO">
+        <h1 className="title glitch" data-text="FICHIER_PERSO" style={{ ["--len" as string]: 13 }}>
           <Decode text="FICHIER_PERSO" speed={40} />
         </h1>
         <div className="mt-7 space-y-1 max-w-[60ch]">

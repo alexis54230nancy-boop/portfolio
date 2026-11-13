@@ -121,7 +121,9 @@ export default function Identite() {
             </div>
           </div>
           <div className="relative justify-self-start md:justify-self-end md:mb-2 md:mr-4">
-            <Spark size={46} className="absolute -top-9 -right-7 z-10 hidden md:block" />
+            <span className="absolute -top-9 -right-7 z-10 hidden md:block">
+              <Spark size={46} />
+            </span>
           <div ref={portrait} className="portrait duotone">
             <img
               src={asset("/img/portrait.webp")}
